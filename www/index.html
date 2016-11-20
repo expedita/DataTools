@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="spec/lib/css/smoothness/jquery-ui-1.10.4.custom.min.css" />
+        <title>MyKBase App</title>
+    </head>
+    <body>
+        <div class="app">
+            <h1>My Knowkedge Base App</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+                <p class="event received">Device is Ready</p>
+            </div>
+            <div id="kbSelector"  style="margin-top:30px;">
+                <input type="button" id="btRegister" value="Register new Knowledge Base" onclick="javascript: window.open('register.html', '_self');" />
+            </div>
+            <div style="margin-top:30px;">
+                <input type="text"     id="LgInEntity"   title="Organisation" placeholder="Organisation" class="LgInField" value="" />
+                <input type="text"     id="LgInUser"     title="User Name"    placeholder="User Name" class="LgInField" value="" />
+                <input type="password" id="LgInPassword" title="Password"     placeholder="Password" class="LgInField" value="" />
+                <input type="text"     id="LgInKb"       title="Knowledge Base" placeholder="Knowledge Base" class="LgInField" value="" />
+                <input type="button"   id="LgInSubmit"   value="Log In"  class="LgButton" onclick="javascript:app.login()" />
+            </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="spec/lib/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="spec/lib/js/jquery-ui-1.10.4.custom.min.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+		    try {
+
+				//var value = window.localStorage.getItem("entity");
+				//var value2 = window.localStorage.getItem("user");
+				//if ((value != null) && (value != "")) {
+				//	document.getElementById('LgInEntity').value = value;
+				//	document.getElementById('LgInUser').value = value2;
+				//}
+
+				var kbs = window.localStorage.getItem("registeredkb");
+				if (kbs != null) {
+				    kbArray = kbs.split(";;");
+
+				    var lvDiv = document.getElementById("kbSelector");
+				    for(i=0; i< kbArray.length; i++) {
+				        var data = kbArray[i].split("::");
+						if(data[2]=="") {data[2] = data[0]; };
+				        $("#kbSelector").append("<div class='LgKBSelect' onclick=\"apply('" + data[0] + "','" + data[1] + "','" + data[2] + "');\">" + data[2] + "</div>");
+				    };
+
+				}
+		    } catch (ex) { }
+
+		    function apply(entity, user, kb) {
+		        document.getElementById('LgInEntity').value = entity;
+		        document.getElementById('LgInUser').value = user;
+		        document.getElementById('LgInKb').value = kb;
+
+		    }
+        </script>
+    </body>
+</html>

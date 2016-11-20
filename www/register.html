@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/page.css" />
+    <link rel="stylesheet" type="text/css" href="spec/lib/css/smoothness/jquery-ui-1.10.4.custom.min.css" />
+    <title>Register new Knowledge Base</title>
+</head>
+<body>
+    <script language="javascript" type="text/javascript">
+        function save() {
+            var old = window.localStorage.getItem("registeredkb");
+
+            var newKb = document.getElementById('entity').value + "::" +
+                        document.getElementById('user').value + "::" +
+                        document.getElementById('kbase').value;
+
+            if (old != null) {
+                newKb = old + ";;" + newKb;
+            } 
+
+            window.localStorage.setItem("registeredkb", newKb);
+            window.open('index.html','_self');
+        }
+    </script>
+    <div class="app">
+        <input type="button" id="btCancelRegister" value="Cancel" class="LgButton" onclick="javascript: window.open('index.html', '_self');" />
+        <input type="text" id="entity" title="Organisation" placeholder="Organisation" class="LgInField" value="" /><br />
+        <input type="text" id="user" title="User" placeholder="Username" class="LgInField" value="" /><br />
+        <input type="text" id="kbase" title="Knowledge Base" placeholder="Knowledge Base" class="LgInField" value="" /><br />
+        <input type="button" id="btSaveRegister" value="Save" class="LgButton" onclick="javascript:save()" />
+    </div>
+
+
+</body>
+</html>

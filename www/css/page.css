@@ -1,0 +1,120 @@
+﻿body {
+
+}
+
+.main-window {
+    width: 100%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.node-box {
+    float: left;
+    padding: 1%;
+    margin: 1%;
+    width: 45%;
+    height: 50px;
+    border: 1px solid #739C9A;
+    border-radius: 10px;
+    background-color: #BCCBE8;
+    color: #014798;
+}
+
+.node-content {
+    float: left;
+    clear: both;
+    margin-top:10px;
+    margin-bottom: 20px;
+    width: 95%;
+}
+
+.node-name {
+    font-size:18px;
+    font-weight: bold;
+}
+
+.node-type {
+    font-size: 12px;
+}
+
+.node-description {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    text-transform: initial;
+}
+
+.node-context{
+    padding-top: 10px;
+    padding-bottom: 20px;
+    text-transform: initial;
+}
+
+.node-content-title {
+    clear: both;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: solid 1px #ddd3d3;
+}
+
+/* FORM ELEMENTS*/
+.overlay {
+    clear:both;
+    width: 100%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.edit-form {
+    clear: both;
+    margin-top: 20px;
+    width: 95%;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.form-title-div {
+    margin: 10px 0px 5px 0px;
+}
+.form-title {
+    text-transform: lowercase;
+    color: gray;
+}
+.form-input-text {
+    width: 100%;
+}
+.form-input-textbox {
+    width: 100%;
+    height: 100px;
+}
+.form-action-button {
+    min-width: 80px;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: auto;
+    float: left;
+}
+.form-action-button-right {
+    min-width: 80px;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: auto;
+    float: right;
+}
+
+/*  GENERIC MESSAGES */
+
+.call-notice {
+    text-transform: initial;
+    color: darkgray;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.call-error {
+    text-transform: initial;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

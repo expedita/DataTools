@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/page.css" />
+    <link rel="stylesheet" type="text/css" href="spec/lib/css/smoothness/jquery-ui-1.10.4.custom.min.css" />
+    <title>MyKBase App</title>
+</head>
+<body>
+    <h1>My Knowkedge Base App</h1>
+    <div class="main-window" id="menu">
+        <button class="menu-button" id="backnode" onclick="app.back();">go back</button>
+        <button class="menu-button" id="reload" onclick="app.reload();">reload</button>
+        <button class="menu-button" id="rootnodes" onclick="app.loadRoots();">root nodes</button>
+        <button class="menu-button" id="logout"    onclick="window.open('index.html','_self');">log out</button>
+    </div>
+    <div class="main-window" id="mainWindow">
+    </div>
+    <div class="overlay" id="nodeEditForm" style="display:none;">
+        <div class="node-content-title">node edition</div>
+        <div class="edit-form">
+            <input class="form-input-hidden" type="hidden" id="nodeId" value="" />
+            <input class="form-input-hidden" type="hidden" id="nodeContextId" value="" />
+            <span class="form-title">Concept Title</span>
+            <input class="form-input-text" type="text" id="nodeTitle" value="" />
+            
+            <div class="form-title-div">
+                <span class="form-title">Concept Description</span>
+                <div style="float: right" onclick="javascript: document.getElementById('nodeDescription').style.height = '400px';">expand</div>
+                <div style="float: right; margin-right: 10px;" onclick="javascript: document.getElementById('nodeDescription').style.height = '100px';">colapse</div>
+            </div>
+            <textarea class="form-input-textbox" id="nodeDescription"></textarea>
+
+            <div class="form-title-div">
+                <span class="form-title">Context Placement</span>
+                <div style="float: right" onclick="javascript: document.getElementById('nodeContext').style.height = '400px';">expand</div>
+                <div style="float: right; margin-right: 10px;" onclick="javascript: document.getElementById('nodeContext').style.height = '100px';">colapse</div>
+            </div>
+            <textarea class="form-input-textbox" id="nodeContext"></textarea>
+
+            <div style="width:100%">
+                <div style="width:50%; text-align: left; float:left;">
+                    <input type="button" class="form-action-button" value="clear" id="btClear"
+                           onclick="clearForm();" />
+                    <input class="form-action-button" type="button" value="add" id="btAddNode"
+                           onclick="addNode(document.getElementById('nodeTitle').value,
+                                       document.getElementById('nodeDescription').value,
+                                       document.getElementById('nodeContextId').value,
+                                       document.getElementById('nodeContext').value);" />
+                </div>
+                <div style="width:50%; text-align: right; float:left;">
+                    <input class="form-action-button-right" type="button" value="save" id="btSaveNode"
+                           onclick="updateNode(document.getElementById('nodeId').value,
+                                       document.getElementById('nodeTitle').value,
+                                       document.getElementById('nodeDescription').value,
+                                       document.getElementById('nodeContextId').value,
+                                       document.getElementById('nodeContext').value);" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/dataUpdate.js"></script>
+    <script type="text/javascript" src="spec/lib/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="spec/lib/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript">
+       app.loadRoots();
+	</script>
+</body>
+</html>
