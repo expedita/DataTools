@@ -82,6 +82,8 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+
+
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -142,7 +144,12 @@ var app = {
 
         clearAjax();
 
-        nodeAjaxCall = doCall("xml", "getNode", "&nId=" + id + "&hId=" + hId, afterGetNode);
+        loadNode(id, hId).then(function(doc) {
+            //if(doc == null) throw('invalid cache');
+            afterGetNode(doc, true);
+        }).catch(function() {
+            nodeAjaxCall = doCall("xml", "getNode", "&nId=" + id + "&hId=" + hId, afterGetNode);
+        });
     },
 
     loadChildNodes: function (id, hId) {
@@ -150,13 +157,23 @@ var app = {
             nodeChildCall.abort();
         } catch (ex) { }
 
-        nodeChildCall = doCall("xml", "getChildNodes", "&id=" + id + "&hId=" + hId + "&depth=1", afterGetChildNodes);
+        loadList(id, hId, 'child').then(function(doc) {
+            //if(doc == null) throw('invalid cache');
+            afterGetChildNodes(doc, true);
+        }).catch(function() {
+            nodeChildCall=doCall("xml", "getChildNodes", "&id="+id+"&hId="+hId+"&depth=1", afterGetChildNodes);
+        });
     },
 
     loadNodeContexts: function (id) {
         try { nodeHierarchyCall.abort(); } catch (ex) { }
 
-        nodeHierarchyCall = doCall("xml", "getNodeHierarchies", "&nId=" + id, afterGetNodeContexts);
+        loadList(id, 0, 'contexts').then(function(doc) {
+            //if(doc == null) throw('invalid cache');
+            afterGetNodeContexts(doc, true);
+        }).catch(function() {
+            nodeHierarchyCall=doCall("xml", "getNodeHierarchies", "&nId="+id, afterGetNodeContexts);
+        })
     }
 };
 
@@ -171,7 +188,13 @@ function afterGetRoots(xml) {
     });
 }
 
-function afterGetNode(xml) {
+function afterGetNode(xml, cached) {
+    //store in local db
+    if(cached != true) {
+        storeNode(currentId, currentHId, xml);
+    }
+
+    //render the node
     $("#mainWindow").empty();
     $(xml).find("Nodulo").each(function () {
         $("#mainWindow").append("<div class='node-content'>");
@@ -200,10 +223,15 @@ function afterGetNode(xml) {
     });
 }
 
-function afterGetChildNodes(xml) {
+function afterGetChildNodes(xml, cached) {
     if ($(xml).find("Error").length > 0) {
         $("#mainWindow").append("<div class='call-error'>" + $($(xml).find("Error")[0]).text() + "</div>");
     } else {
+        //store in local db
+        if(cached != true) {
+            storeList(currentId, currentHId, 'child' , xml);
+        }
+
         var id = 0;
         var hId = 0;
         //the node may be root or normal
@@ -232,10 +260,15 @@ function afterGetChildNodes(xml) {
     }
 }
 
-function afterGetNodeContexts(xml) {
+function afterGetNodeContexts(xml, cached) {
+    //store in local db
+    if(cached != true) {
+        storeList(currentId, 0, 'contexts' , xml);
+    }
+
+    //render interface
     $("#mainWindow").append("<div class='node-content-title'>all node contexts</div>");
     $(xml).find("RootNodulo").each(function () {
-
         $("#mainWindow").append("<div id='" + $(this).attr("value") + "::" + $(this).attr("hierarquiaId") + "' class='node-box' onclick='app.loadNode(" + $(this).attr("value") + "," + $(this).attr("hierarquiaId") + ");'>" + $(this).attr("label") + "</div>");
     });
 

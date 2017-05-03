@@ -21,6 +21,14 @@ function doCallUpdate(data, functSuccess) {
 function updateNode(id, title, text, hId, context) {
     document.getElementById("mainWindow").style.display = "none";
     document.getElementById("nodeEditForm").style.display = "none";
+
+    //remove nodes from pounchDB
+    try {
+        deleteNode(id, hId);
+        deleteList(id, hId, 'child');
+        deleteList(id, hId, 'contexts');
+    } catch (ex) { };
+
     clearAjax();
     doCallUpdate("<updateNode><Nodulo>" +
         "<NodeId>" + id + "</NodeId>" +
