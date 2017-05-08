@@ -146,7 +146,11 @@ var app = {
 
         loadNode(id, hId).then(function(doc) {
             //if(doc == null) throw('invalid cache');
-            afterGetNode(doc, true);
+            if($(doc).find("Nodulo").length == 0) {
+                nodeAjaxCall = doCall("xml", "getNode", "&nId=" + id + "&hId=" + hId, afterGetNode);
+            } else {
+                afterGetNode(doc, true);
+            }
         }).catch(function() {
             nodeAjaxCall = doCall("xml", "getNode", "&nId=" + id + "&hId=" + hId, afterGetNode);
         });
@@ -192,6 +196,8 @@ function afterGetNode(xml, cached) {
     //store in local db
     if(cached != true) {
         storeNode(currentId, currentHId, xml);
+        //if the node was loaded, force to load also the child list
+        deleteList(currentId, currentHId, 'child');
     }
 
     //render the node
@@ -230,6 +236,8 @@ function afterGetChildNodes(xml, cached) {
         //store in local db
         if(cached != true) {
             storeList(currentId, currentHId, 'child' , xml);
+            //id the child list was loaded, probably we also need to load the hierarchies
+            deleteList(currentId, 0, 'contexts');
         }
 
         var id = 0;
