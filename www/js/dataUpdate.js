@@ -39,7 +39,14 @@ function updateNode(id, title, text, hId, context) {
       "</Nodulo></updateNode>", app.reload);
 };
 
-function addNode(title, text, hId, context) {
+function addNode(title, text, currentNode, hId, context) {
+    //remove nodes from pounchDB
+    try {
+        deleteNode(currentNode, hId);
+        deleteList(currentNode, hId, 'child');
+        deleteList(currentNode, hId, 'contexts');
+    } catch (ex) { };
+
     document.getElementById("mainWindow").style.display = "none";
     document.getElementById("nodeEditForm").style.display = "none";
     clearAjax();

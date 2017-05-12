@@ -130,6 +130,12 @@ var app = {
     reload: function () {
         clearAjax();
         if (currentId != 0) {
+            //remove nodes from pounchDB
+            try {
+                deleteNode(currentId, currentHId);
+                deleteList(currentId, currentHId, 'child');
+                deleteList(currentId, currentHId, 'contexts');
+            } catch (ex) { };
             app.loadNode(currentId, currentHId);
         } else {
             app.loadRoots();
