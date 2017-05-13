@@ -142,6 +142,11 @@ var app = {
         }
     },
 
+    search: function () {
+        clearAjax();
+        showSearchForm();
+    },
+
     loadNode: function (id, hId) {
         lastId = currentId;
         lastHId = currentHId;
@@ -208,6 +213,12 @@ function afterGetNode(xml, cached) {
 
     //render the node
     $("#mainWindow").empty();
+    $(xml).find("Error").each(function () {
+        $("#mainWindow").append("<div class='error-content'>");
+        $("#mainWindow").append("<div class='error-description'>" + $(this).text() + "</div>");
+        $("#mainWindow").append("</div>");
+    });
+
     $(xml).find("Nodulo").each(function () {
         $("#mainWindow").append("<div class='node-content'>");
         $("#mainWindow").append("<span class='node-name'>" + $(this).children("Referencia").text() + "</span><br />");
@@ -215,7 +226,7 @@ function afterGetNode(xml, cached) {
         $("#mainWindow").append("<div class='node-description'>" + $(this).children("Descricao").text().replace(/(\r\n|\n|\r)/g, "<br />") + "</div>");
 
         if ($(this).children("HierarquiaId").text() != "-1") {
-            $("#mainWindow").append("<div class='node-context'>" + $(this).children("Context").text() + "</div>");
+            $("#mainWindow").append("<div class='node-context'>" + $(this).children("Context").text().replace(/(\r\n|\n|\r)/g, "<br />") + "</div>");
         }
 
         $("#mainWindow").append("</div>");
@@ -231,7 +242,6 @@ function afterGetNode(xml, cached) {
         document.getElementById("nodeEditForm").style.display = "";
 
         app.loadChildNodes(currentId, currentHId);
-
     });
 }
 
@@ -284,6 +294,46 @@ function afterGetNodeContexts(xml, cached) {
     $("#mainWindow").append("<div class='node-content-title'>all node contexts</div>");
     $(xml).find("RootNodulo").each(function () {
         $("#mainWindow").append("<div id='" + $(this).attr("value") + "::" + $(this).attr("hierarquiaId") + "' class='node-box' onclick='app.loadNode(" + $(this).attr("value") + "," + $(this).attr("hierarquiaId") + ");'>" + $(this).attr("label") + "</div>");
+    });
+
+}
+
+function showSearchForm() {
+    //clear the screen
+    document.getElementById("nodeEditForm").style.display = "none";
+    $("#mainWindow").empty();
+
+    //add search form
+    var txtHTML = "";
+    txtHTML += "<div class='search-type-div'>";
+    txtHTML += "<select size='4' class='search-select' id='nodeType'>" + "<option selected value='0'>All</option>"
+                                + "<option selected value='7'>Folder</option>"
+                                + "<option selected value='906'>Generic</option>"
+                                + "<option selected value='1'>Entidade</option>"
+                                + "</select>";
+    txtHTML += "<div>Reference&nbsp;";
+    txtHTML += "<input type='text' value='' id='searchText'  placeholder='node name' class='search-input' />";
+    txtHTML += "<input type='button' value='search' onclick='javscript:dosearch();' class='search-button' />";
+    txtHTML += "</div>";
+    txtHTML += "</div>";
+    $("#mainWindow").append(txtHTML);
+}
+
+function dosearch() {
+    var type = document.getElementById("nodeType").value;
+    var text = document.getElementById("searchText").value;
+
+    clearAjax();
+    doCall("xml", "getNodesByRefAndType", "&ref="+text+"&type="+type, afterDoSearch);
+}
+
+function afterDoSearch(xml, cached) {
+    $("#mainWindow").empty();
+
+    //render interface
+    $("#mainWindow").append("<div class='node-content-title'>results list</div>");
+    $(xml).find("Nodulo").each(function () {
+        $("#mainWindow").append("<div id='" + $(this).attr("Value") + "::" + $(this).attr("HierarquiaId") + "' class='node-box' onclick='app.loadNode(" + $(this).attr("Value") + "," + $(this).attr("HierarquiaId") + ");'>" + $(this).attr("Ref") + "</div>");
     });
 
 }
