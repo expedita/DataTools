@@ -189,6 +189,17 @@ var app = {
         }).catch(function() {
             nodeHierarchyCall=doCall("xml", "getNodeHierarchies", "&nId="+id, afterGetNodeContexts);
         })
+    },
+
+    loadNodeRelations: function (id) {
+        try { nodeRelationsCall.abort(); } catch (ex) { }
+
+        loadList(id, 0, 'relations').then(function(doc) {
+            //if(doc == null) throw('invalid cache');
+            afterGetNodeRelations(doc, true);
+        }).catch(function() {
+            nodeRelationsCall=doCall("xml", "relationGraph", "&id="+id, afterGetNodeRelations);
+        })
     }
 };
 
@@ -267,18 +278,20 @@ function afterGetChildNodes(xml, cached) {
             hId = $($(xml).find("RootNodulo")[0]).attr("hierarquiaId");
         }
 
-        $("#mainWindow").append("<div class='node-content-title'>within current context</div>");
+        var newHTml = "<div class='node-children' ><div class='node-content-title'>within current context</div>";
 
         var itemAdded = false;
         $(xml).find("Nodulo").each(function () {
             if ($(this).attr("value") != id) {
                 itemAdded = true;
-                $("#mainWindow").append("<div id='" + $(this).attr("value") + "::" + $(this).attr("hierarquiaId") + "' class='node-box' onclick='app.loadNode(" + $(this).attr("value") + "," + $(this).attr("hierarquiaId") + ");'>" + $(this).attr("label") + "</div>");
+                newHTml += "<div id='" + $(this).attr("value") + "::" + $(this).attr("hierarquiaId") + "' class='node-box' onclick='app.loadNode(" + $(this).attr("value") + "," + $(this).attr("hierarquiaId") + ");'>" + $(this).attr("label") + "</div>";
             }
         });
         if(!itemAdded) {
-            $("#mainWindow").append("<div class='call-notice'>no further context development</div>");
+            newHTml += "<div class='call-notice'>no further context development</div>";
         }
+        newHTml += "</div>";
+        $("#mainWindow").append(newHTml);
 
         app.loadNodeContexts(id);
     }
@@ -291,11 +304,70 @@ function afterGetNodeContexts(xml, cached) {
     }
 
     //render interface
-    $("#mainWindow").append("<div class='node-content-title'>all node contexts</div>");
+    var newHTml = "<div class='node-contexts'><div class='node-content-title'>all node contexts</div>";
     $(xml).find("RootNodulo").each(function () {
-        $("#mainWindow").append("<div id='" + $(this).attr("value") + "::" + $(this).attr("hierarquiaId") + "' class='node-box' onclick='app.loadNode(" + $(this).attr("value") + "," + $(this).attr("hierarquiaId") + ");'>" + $(this).attr("label") + "</div>");
+        newHTml += "<div id='" + $(this).attr("value") + "::" + $(this).attr("hierarquiaId") + "' class='node-box' onclick='app.loadNode(" + $(this).attr("value") + "," + $(this).attr("hierarquiaId") + ");'>" + $(this).attr("label") + "</div>";
+    });
+    newHTml += "</div>";
+    $("#mainWindow").append(newHTml);
+
+    app.loadNodeRelations(currentId);
+}
+
+var G;
+function afterGetNodeRelations(xml, cached) {
+    //store in local db
+    if(cached != true) {
+        storeList(currentId, 0, 'relations' , xml);
+    }
+
+    G = new jsnx.Graph();
+
+    //var nodes = [];
+    $(xml).find("Node").each(function () {
+        //nodes.push($(this).attr("id"));
+        G.addNodesFrom([$(this).attr("id")], {ref: $(this).attr("prop"), label: $(this).attr("ref")});
     });
 
+    $(xml).find("Edge").each(function () {
+        G.addEdgesFrom([[$(this).attr("fromID"), $(this).attr("toID")]]);
+    });
+
+    //G.addNodesFrom(['test',2,3,4], {group:0});
+    //G.addNodesFrom([5,6,7], {group:1});
+    //G.addNodesFrom([8,9,10,11], {group:2});
+
+    //G.addPath(['test',2,5,6,7,8,11]);
+    //G.addEdgesFrom([['test',3],['test',4],[3,4],[2,3],[2,4],[8,9],[8,10],[9,10],[11,10],[11,9]]);
+
+    var color = d3.scale.category20();
+    jsnx.draw(G, {
+        element: '#canvas',
+        layoutAttr: {
+            friction: 0.8,
+            charge: -90,
+            linkDistance: 150,
+            gravity: 0.01
+        },
+        nodeShape : 'ellipse',
+        nodeAttr: {
+            rx: 30,
+            ry: 15,
+            title: function(d) { return d.label;}
+        },
+        nodeStyle: {
+            fill: function(d) { 
+                return color(d.data.group); 
+            },
+            stroke: 'none'
+        },
+        edgeStyle: {
+            fill: '#999'
+        },
+        withLabels: true,
+        labels: 'ref',
+        labelStyle: { 'font-size': '10px' }
+    });
 }
 
 function showSearchForm() {

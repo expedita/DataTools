@@ -13,12 +13,13 @@
     padding: 1%;
     margin: 1%;
     width: 45%;
-    max-width: 200px;
+    max-width: 230px;
     height: 50px;
     border: 1px solid #739C9A;
     border-radius: 10px;
     background-color: #BCCBE8;
     color: #014798;
+    min-width: 170px;
 }
 
 .error-content {
@@ -57,12 +58,20 @@
     padding-top: 10px;
     padding-bottom: 20px;
     text-transform: initial;
+    max-width: 500px;
+    float: left;
+    width: 100%;
 }
 
 .node-context{
     padding-top: 10px;
     padding-bottom: 20px;
     text-transform: initial;
+    max-width: 500px;
+    width: 100%;
+    float: right;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .node-content-title {
@@ -72,6 +81,19 @@
     margin-top: 10px;
     padding-top: 5px;
     border-top: solid 1px #ddd3d3;
+}
+
+.node-children {
+    float: right;
+    width: 100%;
+    max-width: 900px;
+    clear: both;
+}
+
+.node-contexts {
+    float: left;
+    width: 100%;
+    max-width: 240px;
 }
 
 /* FORM ELEMENTS*/
