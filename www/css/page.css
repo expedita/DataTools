@@ -19,7 +19,9 @@
     border-radius: 10px;
     background-color: #BCCBE8;
     color: #014798;
-    min-width: 170px;
+    min-width: 145px;
+    text-overflow: clip;
+    overflow: hidden;
 }
 
 .error-content {
@@ -58,20 +60,16 @@
     padding-top: 10px;
     padding-bottom: 20px;
     text-transform: initial;
-    max-width: 500px;
-    float: left;
-    width: 100%;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .node-context{
     padding-top: 10px;
     padding-bottom: 20px;
     text-transform: initial;
-    max-width: 500px;
-    width: 100%;
-    float: right;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .node-content-title {
@@ -93,7 +91,7 @@
 .node-contexts {
     float: left;
     width: 100%;
-    max-width: 240px;
+    max-width: 360px;
 }
 
 /* FORM ELEMENTS*/

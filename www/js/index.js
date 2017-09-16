@@ -231,10 +231,10 @@ function afterGetNode(xml, cached) {
     });
 
     $(xml).find("Nodulo").each(function () {
-        $("#mainWindow").append("<div class='node-content'>");
-        $("#mainWindow").append("<span class='node-name'>" + $(this).children("Referencia").text() + "</span><br />");
-        $("#mainWindow").append("<span class='node-type'>" + $(this).children("Tipoe").text() + "</span><br />");
-        $("#mainWindow").append("<div class='node-description'>" + $(this).children("Descricao").text().replace(/(\r\n|\n|\r)/g, "<br />") + "</div>");
+        $("#mainWindow").append("<div class='node-content' id='nodeContent'>");
+        $("#nodeContent").append("<span class='node-name'>" + $(this).children("Referencia").text() + "</span><br />");
+        $("#nodeContent").append("<span class='node-type'>" + $(this).children("Tipoe").text() + "</span><br />");
+        $("#nodeContent").append("<div class='node-description'>" + $(this).children("Descricao").text().replace(/(\r\n|\n|\r)/g, "<br />") + "</div>");
 
         if ($(this).children("HierarquiaId").text() != "-1") {
             $("#mainWindow").append("<div class='node-context'>" + $(this).children("Context").text().replace(/(\r\n|\n|\r)/g, "<br />") + "</div>");
@@ -326,7 +326,7 @@ function afterGetNodeRelations(xml, cached) {
     //var nodes = [];
     $(xml).find("Node").each(function () {
         //nodes.push($(this).attr("id"));
-        G.addNodesFrom([$(this).attr("id")], {ref: $(this).attr("prop"), label: $(this).attr("ref")});
+        G.addNodesFrom([$(this).attr("id")], {ref: $(this).attr("prop"), label: $(this).attr("ref"), id: $(this).attr("id")});
     });
 
     $(xml).find("Edge").each(function () {
@@ -351,9 +351,11 @@ function afterGetNodeRelations(xml, cached) {
         },
         nodeShape : 'ellipse',
         nodeAttr: {
-            rx: 30,
+            rx: 60,
             ry: 15,
-            title: function(d) { return d.label;}
+            title: function(d) { return d.data.ref; },
+            tag: function(d) { return d.data.id; },
+            onclick: function (d) { return "app.loadNode(" + d.node + ",-1);"; }
         },
         nodeStyle: {
             fill: function(d) { 
