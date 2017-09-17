@@ -1,7 +1,7 @@
 #canvas {
   position: relative;
   height: 200px;
-  margin-top: 80px;
+  margin-top: 10px;
   border: 1px solid #aaa;
   border-radius: 3px;
   -moz-border-radius: 3px;
@@ -43,6 +43,6 @@
 
 @media (max-width: 767px) {
   #canvas {
-    display: none;
+    /* display: none; */
   }
 }
