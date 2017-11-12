@@ -3,6 +3,9 @@
   <description>Simple App to browse and edit GesTools ASP knowledge bases.</description>
   <author href="http://www.gestoolsasp.com" email="suporte@gestoolsasp.com">GesTools ASP</author>
   <content src="index.html"/>
+  <platform name="android" />
+  <platform name="ios" />
+  <platform name="winphone" /> 
   <preference name="permissions" value="none"/>
   <preference name="orientation" value="default"/>
   <preference name="target-device" value="universal"/>
