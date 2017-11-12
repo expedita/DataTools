@@ -1,5 +1,5 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.expedita.mykbase" version="1.0.1">
-  <name>My Knowledge Base</name>
+  <name>DataTools</name>
   <description>Simple App to browse and edit GesTools ASP knowledge bases.</description>
   <author href="http://www.gestoolsasp.com" email="suporte@gestoolsasp.com">GesTools ASP</author>
   <content src="index.html"/>
@@ -24,6 +24,7 @@
   <preference name="phonegap-version" value="cli-6.5.0" />
   <preference name="windows-appx-target" value="uap" />
   <preference name="windows-arch" value="x86" />
+  <preference name="windows-target-version" value="10.0" />
   <preference name="windows-identity-name" value="GesToolsASP.DataTools" />
   <plugin name="cordova-plugin-inappbrowser" source="npm" spec="~1.3.0" />
   <plugin name="cordova-plugin-file-transfer" source="npm" spec="~1.5.0" />
