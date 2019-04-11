@@ -25,9 +25,8 @@
   <preference name="windows-appx-target" value="uwp" />
   <preference name="windows-arch" value="x86" />
   <preference name="windows-target-version" value="10.0" />
-  <preference name="windows-phone-target-version" value="10.0" />
   <preference name="windows-identity-name" value="GesToolsASP.DataTools" />
-  <preference name="WindowsDefaultUriPrefix" value="ms-appx-web://" />
+  <preference name="WindowsDefaultUriPrefix" value="ms-appx://" />
   <plugin name="cordova-plugin-inappbrowser" source="npm" spec="~1.3.0" />
   <plugin name="cordova-plugin-file-transfer" source="npm" spec="~1.5.0" />
   <plugin name="cordova-plugin-network-information" source="npm" spec="~1.2.0" />
