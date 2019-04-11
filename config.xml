@@ -24,7 +24,7 @@
   <preference name="phonegap-version" value="cli-6.5.0" />
   <preference name="windows-appx-target" value="uap" />
   <preference name="windows-arch" value="x86" />
-  <preference name="windows-target-version" value="uap" />
+  <preference name="windows-target-version" value="uwp" />
   <preference name="windows-phone-target-version" value="10.0" />
   <preference name="windows-identity-name" value="GesToolsASP.DataTools" />
   <preference name="WindowsDefaultUriPrefix" value="ms-appx-web://" />
