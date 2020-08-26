@@ -34,7 +34,7 @@ function clearAjax() {
 
 var debug = 0;
 //var wspath = "http://localhost:57207/DataToolsHandler.aspx";
-var wspath = "http://ws.inmadeira.com/gestools/Web.Handlers/DataTools/DataToolsHandler.aspx";
+var wspath = "https://ws01.gestoolsasp.com/producao/v4/gst/Web.Handlers/DataTools/DataToolsHandler.aspx";
 
 
 function debugLog(message) {
